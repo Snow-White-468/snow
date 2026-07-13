@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Quote from "./Quote";
 
@@ -8,6 +8,46 @@ export default function LoveButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [secretInput, setSecretInput] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Initializing the background romantic audio layer safely on client side
+    audioRef.current = new Audio("/bg-romance.mp3");
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.4; // Soft background ambient level
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
+  const handleOpenHeart = () => {
+    setIsOpen(true);
+    setIsUnlocked(false);
+    setSecretInput("");
+    
+    // Auto playing the instrumental loop smoothly right on user interaction barrier escape
+    if (audioRef.current && !isPlaying) {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.log("Audio play blocked by browser validation:", err));
+    }
+  };
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
 
   const checkSecretCode = (val: string) => {
     setSecretInput(val);
@@ -18,18 +58,33 @@ export default function LoveButton() {
 
   return (
     <>
-      <motion.button 
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => {
-          setIsOpen(true);
-          setIsUnlocked(false);
-          setSecretInput("");
-        }}
-        className="rounded-full bg-pink-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-pink-600/30 cursor-pointer transition-colors hover:bg-pink-700"
-      >
-        Open My Heart ❤️
-      </motion.button>
+      <div className="flex flex-col items-center gap-4">
+        <motion.button 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleOpenHeart}
+          className="rounded-full bg-pink-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-pink-600/30 cursor-pointer transition-colors hover:bg-pink-700"
+        >
+          Open My Heart ❤️
+        </motion.button>
+
+        {/* Dynamic Music Status Pill Control */}
+        {isPlaying && (
+          <motion.button
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            onClick={toggleMusic}
+            className="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full text-xs text-pink-400 cursor-pointer hover:bg-white/10"
+          >
+            <span className="flex gap-0.5 items-end h-3 w-4">
+              <span className="bg-pink-500 w-0.5 animate-[pulse_0.8s_infinite] h-full" />
+              <span className="bg-pink-500 w-0.5 animate-[pulse_0.5s_infinite] h-3/4" />
+              <span className="bg-pink-500 w-0.5 animate-[pulse_0.9s_infinite] h-1/2" />
+            </span>
+            Music Playing
+          </motion.button>
+        )}
+      </div>
 
       <AnimatePresence>
         {isOpen && (
@@ -49,7 +104,14 @@ export default function LoveButton() {
               transition={{ type: "spring", duration: 0.5 }}
               className="relative bg-neutral-900/90 border border-pink-500/30 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl space-y-6 z-10"
             >
-              <div className="absolute top-4 right-4">
+              <div className="absolute top-4 right-4 flex items-center gap-2">
+                {/* Mute/Unmute Toggle Controller inside the main modal view */}
+                <button 
+                  onClick={toggleMusic}
+                  className="text-gray-400 hover:text-white text-sm bg-white/5 p-2 rounded-xl border border-white/5 cursor-pointer"
+                >
+                  {isPlaying ? "🔇 Mute" : "🔊 Unmute"}
+                </button>
                 <button 
                   onClick={() => setIsOpen(false)}
                   className="text-gray-400 hover:text-white text-xl p-2 cursor-pointer"
