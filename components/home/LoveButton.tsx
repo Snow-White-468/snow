@@ -12,25 +12,24 @@ export default function LoveButton() {
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    // Initializing the background romantic audio layer safely on client side
-    audioRef.current = new Audio("/music/bg-romance.mp3");
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.4; // Soft background ambient level
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-    };
-  }, []);
+  // Lazy initialize the audio layer only when interaction happens on client side
+  const initAudio = () => {
+    if (!audioRef.current) {
+      const audio = new Audio("/music/bg-romance.mp3");
+      audio.loop = true;
+      audio.volume = 0.4;
+      audioRef.current = audio;
+    }
+  };
 
   const handleOpenHeart = () => {
     setIsOpen(true);
     setIsUnlocked(false);
     setSecretInput("");
     
-    // Auto playing the instrumental loop smoothly right on user interaction barrier escape
+    // Explicit client gesture boundary step
+    initAudio();
+
     if (audioRef.current && !isPlaying) {
       audioRef.current.play()
         .then(() => setIsPlaying(true))
@@ -38,14 +37,18 @@ export default function LoveButton() {
     }
   };
 
-  const toggleMusic = () => {
+  const toggleMusic = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevents layout modal handling conflicts
+    initAudio();
+
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.play();
-      setIsPlaying(true);
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.log("Toggle failure caught:", err));
     }
   };
 
@@ -55,6 +58,15 @@ export default function LoveButton() {
       setIsUnlocked(true);
     }
   };
+
+  // Safely cleanup audio processing context on teardown
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -105,7 +117,6 @@ export default function LoveButton() {
               className="relative bg-neutral-900/90 border border-pink-500/30 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl space-y-6 z-10"
             >
               <div className="absolute top-4 right-4 flex items-center gap-2">
-                {/* Mute/Unmute Toggle Controller inside the main modal view */}
                 <button 
                   onClick={toggleMusic}
                   className="text-gray-400 hover:text-white text-sm bg-white/5 p-2 rounded-xl border border-white/5 cursor-pointer"
