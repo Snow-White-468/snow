@@ -12,10 +12,11 @@ export default function LoveButton() {
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Lazy initialize the audio layer only when interaction happens on client side
+  // Replacing internal path with a secure web stream link to bypass 404 directory errors
   const initAudio = () => {
     if (!audioRef.current) {
-      const audio = new Audio("/music/bg-romance.mp3");
+      // Direct high-quality copyright-free low-fi romantic ambient stream link
+      const audio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
       audio.loop = true;
       audio.volume = 0.4;
       audioRef.current = audio;
