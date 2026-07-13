@@ -14,7 +14,7 @@ export default function LoveButton() {
 
   useEffect(() => {
     // Initializing the background romantic audio layer safely on client side
-    audioRef.current = new Audio("/bg-romance.mp3");
+    audioRef.current = new Audio("/music/bg-romance.mp3");
     audioRef.current.loop = true;
     audioRef.current.volume = 0.4; // Soft background ambient level
 
