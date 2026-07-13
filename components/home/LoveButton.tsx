@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Quote from "./Quote";
 
@@ -10,46 +10,33 @@ export default function LoveButton() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   
+  // Directly targeting the HTML native audio element reference
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // Replacing internal path with a secure web stream link to bypass 404 directory errors
-  const initAudio = () => {
-    if (!audioRef.current) {
-      // Direct high-quality copyright-free low-fi romantic ambient stream link
-      const audio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
-      audio.loop = true;
-      audio.volume = 0.4;
-      audioRef.current = audio;
-    }
-  };
 
   const handleOpenHeart = () => {
     setIsOpen(true);
     setIsUnlocked(false);
     setSecretInput("");
     
-    // Explicit client gesture boundary step
-    initAudio();
-
+    // Play native audio immediately on user interaction click event
     if (audioRef.current && !isPlaying) {
       audioRef.current.play()
         .then(() => setIsPlaying(true))
-        .catch((err) => console.log("Audio play blocked by browser validation:", err));
+        .catch((err) => console.log("Native audio blocked:", err));
     }
   };
 
   const toggleMusic = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevents layout modal handling conflicts
-    initAudio();
-
+    e.stopPropagation();
     if (!audioRef.current) return;
+    
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
       audioRef.current.play()
         .then(() => setIsPlaying(true))
-        .catch((err) => console.log("Toggle failure caught:", err));
+        .catch((err) => console.log("Native play failed:", err));
     }
   };
 
@@ -60,17 +47,16 @@ export default function LoveButton() {
     }
   };
 
-  // Safely cleanup audio processing context on teardown
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-    };
-  }, []);
-
   return (
     <>
+      {/* Absolute Native HTML5 Audio Tag - No extra state layers */}
+      <audio 
+        ref={audioRef}
+        src="/music/bg-romance.mp3" 
+        loop 
+        preload="auto"
+      />
+
       <div className="flex flex-col items-center gap-4">
         <motion.button 
           whileHover={{ scale: 1.05 }}
@@ -120,7 +106,7 @@ export default function LoveButton() {
               <div className="absolute top-4 right-4 flex items-center gap-2">
                 <button 
                   onClick={toggleMusic}
-                  className="text-gray-400 hover:text-white text-sm bg-white/5 p-2 rounded-xl border border-white/5 cursor-pointer"
+                  className="text-gray-400 hover:text-white text-xs bg-white/5 px-3 py-1.5 rounded-xl border border-white/5 cursor-pointer"
                 >
                   {isPlaying ? "🔇 Mute" : "🔊 Unmute"}
                 </button>
