@@ -42,7 +42,7 @@ export default function Countdown() {
   // Hydration fallback layer
   if (!isMounted) {
     return (
-      <div className="mt-4 h-[120px] max-w-md w-full bg-white/5 backdrop-blur-md rounded-2xl border border-pink-500/20 opacity-20 animate-pulse" />
+      <div className="mt-4 h-30 max-w-md w-full bg-white/5 backdrop-blur-md rounded-2xl border border-pink-500/20 opacity-20 animate-pulse" />
     );
   }
 
