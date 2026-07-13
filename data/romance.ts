@@ -38,3 +38,16 @@ export const DAILY_QUOTES: string[] = [
 
 // Relationship Start Date for Countdown
 export const MARRIAGE_DATE = "2026-06-07T00:00:00";
+
+// Existing code ke sabse niche yeh add karein:
+
+export function getTodayThemeType(): 'birthday' | 'anniversary' | 'normal' {
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const dateKey = `${month}-${day}`;
+
+  if (dateKey === "12-06") return 'birthday';
+  if (dateKey === "06-07") return 'anniversary';
+  return 'normal';
+}
