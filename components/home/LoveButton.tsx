@@ -10,6 +10,9 @@ export default function LoveButton() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   
+  // Track unique dynamic renders to force completely new random quote instances
+  const [quoteTriggerKey, setQuoteTriggerKey] = useState(0);
+  
   // Directly targeting the HTML native audio element reference
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -17,6 +20,9 @@ export default function LoveButton() {
     setIsOpen(true);
     setIsUnlocked(false);
     setSecretInput("");
+    
+    // Changing the state updates the key context, generating a new quote instantly
+    setQuoteTriggerKey(prev => prev + 1);
     
     // Play native audio immediately on user interaction click event
     if (audioRef.current && !isPlaying) {
@@ -122,7 +128,8 @@ export default function LoveButton() {
                 <span className="text-2xl animate-pulse">{isUnlocked ? "✨" : "💝"}</span>
               </div>
 
-              <Quote />
+              {/* Dynamic Key logic forces a fresh random item look up every single time */}
+              <Quote key={quoteTriggerKey} />
 
               <div className="pt-4 border-t border-white/5 space-y-3">
                 {!isUnlocked ? (
