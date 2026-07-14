@@ -8,6 +8,7 @@ interface TimeLeft {
   hours: string;
   minutes: string;
   seconds: string;
+  isPast: boolean;
 }
 
 export default function Countdown() {
@@ -16,21 +17,21 @@ export default function Countdown() {
     hours: "00",
     minutes: "00",
     seconds: "00",
+    isPast: false
   });
   
   const [loveThoughtsCount, setLoveThoughtsCount] = useState<number>(0);
 
   useEffect(() => {
+    // Your exact target romance timeline milestone
     const targetDate = new Date("2026-06-07T00:00:00");
 
     const calculateTime = () => {
       const now = new Date();
-      const difference = targetDate.getTime() - now.getTime();
-
-      if (difference <= 0) {
-        setTimeLeft({ days: "00", hours: "00", minutes: "00", seconds: "00" });
-        return;
-      }
+      // Using absolute value to ensure math counts up smoothly after target date crosses
+      const rawDifference = targetDate.getTime() - now.getTime();
+      const isPast = rawDifference <= 0;
+      const difference = Math.abs(rawDifference);
 
       const d = Math.floor(difference / (1000 * 60 * 60 * 24));
       const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -42,6 +43,7 @@ export default function Countdown() {
         hours: String(h).padStart(2, "0"),
         minutes: String(m).padStart(2, "0"),
         seconds: String(s).padStart(2, "0"),
+        isPast
       });
 
       const baselinePastDate = new Date("2024-01-01T00:00:00");
@@ -66,14 +68,14 @@ export default function Countdown() {
     <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto">
       <div className="w-full bg-neutral-900/40 border border-white/5 backdrop-blur-md rounded-3xl p-6 shadow-xl text-center space-y-4">
         <p className="text-xs font-semibold tracking-wider text-pink-500 uppercase flex items-center justify-center gap-1">
-          Days of Pure Love Together ❤️
+          {timeLeft.isPast ? "Time Spent in Pure Love Together ❤️" : "Days of Pure Love Together ❤️"}
         </p>
 
         <div className="grid grid-cols-4 gap-2">
           {timeBlocks.map((block) => (
             <div 
               key={block.label} 
-              className="... flex-col items-center justify-center min-w-17.5"
+              className="bg-neutral-950/60 border border-white/5 rounded-2xl py-3 px-1 flex flex-col items-center justify-center min-w-17.5"
             >
               <span className="text-2xl font-bold font-mono tracking-tight text-white transition-all duration-300">
                 {block.value}
