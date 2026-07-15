@@ -36,7 +36,6 @@ export default function LoveButton() {
     const idx2 = (dayOfYear + 2) % lettersPool.length;
     const idx3 = (dayOfYear + 5) % lettersPool.length;
 
-    // Fixed: Wrapped inside animation frame block to bypass cascading render errors completely
     requestAnimationFrame(() => {
       setTodaysLetters([
         { id: "letter-1", tag: "💌 Pehla Khat: Shuruat", content: lettersPool[idx1] },
@@ -108,9 +107,9 @@ export default function LoveButton() {
             className="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full text-xs text-pink-400 cursor-pointer hover:bg-white/10"
           >
             <span className="flex gap-0.5 items-end h-3 w-4">
-              <span className="bg-pink-500 w-0.5 animate-[pulse_0.8s_infinite] h-full" />
-              <span className="bg-pink-500 w-0.5 animate-[pulse_0.5s_infinite] h-3/4" />
-              <span className="bg-pink-500 w-0.5 animate-[pulse_0.9s_infinite] h-1/2" />
+              <span className="bg-pink-500 w-0.5 animate-pulse h-full" />
+              <span className="bg-pink-500 w-0.5 animate-pulse h-3/4" />
+              <span className="bg-pink-500 w-0.5 animate-pulse h-1/2" />
             </span>
             Music Playing
           </motion.button>
@@ -133,7 +132,7 @@ export default function LoveButton() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className="relative bg-neutral-900/90 border border-pink-500/30 rounded-3xl p-6 max-w-md w-full text-center shadow-2xl space-y-6 z-10 my-auto max-h-[90vh] overflow-y-auto scrollbar-none"
+              className="relative bg-[#250f1a]/95 border border-pink-500/40 rounded-3xl p-6 max-w-md w-full text-center shadow-2xl shadow-pink-950/50 space-y-6 z-10 my-auto max-h-[90vh] overflow-y-auto"
             >
               <div className="absolute top-4 right-4 flex items-center gap-2">
                 <button 
@@ -166,7 +165,7 @@ export default function LoveButton() {
                       placeholder="MMDD"
                       value={secretInput}
                       onChange={(e) => checkSecretCode(e.target.value)}
-                      className="w-24 bg-black/50 border border-pink-500/30 rounded-lg py-1 px-2 text-center text-white placeholder-gray-600 focus:outline-none focus:border-pink-500 text-sm tracking-widest"
+                      className="w-24 bg-[#14040a]/80 border border-pink-500/40 rounded-lg py-1 px-2 text-center text-rose-200 placeholder-rose-900/50 focus:outline-none focus:border-pink-400 text-sm tracking-widest"
                     />
                   </div>
                 ) : (
@@ -181,7 +180,7 @@ export default function LoveButton() {
                     
                     <div className="space-y-2 mt-2">
                       {todaysLetters.map((letter) => (
-                        <div key={letter.id} className="bg-black/40 border border-white/5 rounded-xl overflow-hidden transition-all duration-300">
+                        <div key={letter.id} className="bg-[#1b0711]/60 border border-pink-500/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-pink-500/20 shadow-inner">
                           <button
                             onClick={() => setActiveLetterId(activeLetterId === letter.id ? null : letter.id)}
                             className="w-full text-left px-4 py-2.5 text-xs font-medium text-gray-200 flex justify-between items-center hover:bg-white/5 cursor-pointer"
@@ -199,7 +198,7 @@ export default function LoveButton() {
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="px-4 pb-3 pt-1 border-t border-white/5 text-[11px] text-gray-400 italic leading-relaxed"
+                                className="px-4 pb-3 pt-1 border-t border-pink-500/10 text-[11px] text-rose-200/80 italic leading-relaxed"
                               >
                                 {letter.content}
                               </motion.div>

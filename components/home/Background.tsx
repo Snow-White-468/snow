@@ -1,36 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import FloatingHearts from "./FloatingHearts";
 import SnowEffect from "./SnowEffect";
-import { getTodayThemeType } from "@/data/romance";
 
 export default function Background() {
-  const [gradientClass, setGradientClass] = useState("rgba(244,63,94,0.08)");
-
-  useEffect(() => {
-    const theme = getTodayThemeType();
-    
-    // Fixed: Wrapping inside animation frame to resolve strict set-state lint rule
-    requestAnimationFrame(() => {
-      if (theme === 'birthday') {
-        setGradientClass("rgba(236,72,153,0.15)"); // Vibrant Pink Glow
-      } else if (theme === 'anniversary') {
-        setGradientClass("rgba(234,179,8,0.12)"); // Premium Golden Glow
-      }
-    });
-  }, []);
-
   return (
-    <div className="absolute inset-0 bg-black overflow-hidden pointer-events-none z-0">
-      {/* Dynamic Theme Radial Overlay */}
-      <div 
-        className="absolute inset-0 transition-all duration-1000" 
-        style={{
-          backgroundImage: `radial-gradient(circle at center, ${gradientClass} 0%, transparent 70%)`
-        }}
-      />
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 bg-linear-to-b from-[#cce0ee] via-[#fcdceb] to-[#f3cbdf]">
+      {/* Liquid Organic Apple Styled Blurred Orbs for Visual Glow */}
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[50%] bg-[#b8daf0]/50 rounded-full filter blur-[100px]" />
+      <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[60%] bg-[#f3b5d7]/40 rounded-full filter blur-[120px]" />
       
+      {/* Translucent ambient structures falling */}
       <SnowEffect />
       <FloatingHearts />
     </div>
