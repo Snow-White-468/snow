@@ -11,7 +11,7 @@ export default function Welcome() {
         transition={{ duration: 0.6 }}
         className="text-4xl md:text-5xl font-bold tracking-tight text-[#1d1d1f]"
       >
-        Welcome, <span className="text-transparent bg-clip-text bg-linear-to-r from-[#e05297] to-[#f370a2]">Shanowar</span> ❤️
+        Welcome, <span className="text-transparent bg-clip-text bg-linear-to-r from-[#e05297] to-[#f370a2]">Shanowar</span>
       </motion.h1>
 
       <motion.p 

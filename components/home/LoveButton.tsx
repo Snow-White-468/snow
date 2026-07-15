@@ -38,9 +38,9 @@ export default function LoveButton() {
 
     requestAnimationFrame(() => {
       setTodaysLetters([
-        { id: "letter-1", tag: "💌 Pehla Khat: Shuruat", content: lettersPool[idx1] },
-        { id: "letter-2", tag: "💖 Doosra Khat: Humsafar", content: lettersPool[idx2 === idx1 ? (idx2 + 1) % lettersPool.length : idx2] },
-        { id: "letter-3", tag: "✨ Teesra Khat: Hamesha K Liye", content: lettersPool[idx3 === idx1 || idx3 === idx2 ? (idx3 + 3) % lettersPool.length : idx3] }
+        { id: "letter-1", tag: "Pehla Khat: Shuruat", content: lettersPool[idx1] },
+        { id: "letter-2", tag: "Doosra Khat: Humsafar", content: lettersPool[idx2 === idx1 ? (idx2 + 1) % lettersPool.length : idx2] },
+        { id: "letter-3", tag: "Teesra Khat: Hamesha K Liye", content: lettersPool[idx3 === idx1 || idx3 === idx2 ? (idx3 + 3) % lettersPool.length : idx3] }
       ]);
     });
   }, [isOpen]);
@@ -96,7 +96,7 @@ export default function LoveButton() {
           onClick={handleOpenHeart}
           className="rounded-full bg-pink-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-pink-600/30 cursor-pointer transition-colors hover:bg-pink-700"
         >
-          Open My Heart ❤️
+          Open My Heart
         </motion.button>
 
         {isPlaying && (
@@ -139,7 +139,7 @@ export default function LoveButton() {
                   onClick={toggleMusic}
                   className="text-gray-400 hover:text-white text-xs bg-white/5 px-3 py-1.5 rounded-xl border border-white/5 cursor-pointer"
                 >
-                  {isPlaying ? "🔇 Mute" : "🔊 Unmute"}
+                  {isPlaying ? "Mute" : "Unmute"}
                 </button>
                 <button 
                   onClick={() => setIsOpen(false)}
@@ -150,7 +150,7 @@ export default function LoveButton() {
               </div>
 
               <div className="w-14 h-14 bg-pink-500/10 rounded-full flex items-center justify-center mx-auto border border-pink-500/20 shadow-inner mt-4">
-                <span className="text-xl animate-pulse">{isUnlocked ? "✨" : "💝"}</span>
+                <span className="text-xl animate-pulse">Vault</span>
               </div>
 
               <Quote key={quoteTriggerKey} />
@@ -175,7 +175,7 @@ export default function LoveButton() {
                     className="space-y-3 text-left w-full"
                   >
                     <p className="text-xs font-semibold text-pink-400 text-center uppercase tracking-wide">
-                      🔒 Secret Fortune Vault Unlocked!
+                      Secret Fortune Vault Unlocked
                     </p>
                     
                     <div className="space-y-2 mt-2">
@@ -212,7 +212,7 @@ export default function LoveButton() {
               </div>
 
               <div className="pt-2 text-[10px] text-gray-500">
-                Created securely with code & infinity love by Asif Jamil
+                Created securely with code by Asif Jamil
               </div>
             </motion.div>
           </div>
