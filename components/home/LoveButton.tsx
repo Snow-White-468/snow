@@ -1,26 +1,19 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Quote from "./Quote";
 
-// Personal highly customized emotional letters dataset configuration layers
-const secretLetters = [
-  {
-    id: "letter-1",
-    tag: "💌 Pehla Khat: Shuruat",
-    content: "Shanowar, tum meri zindagi ka wo haseen tohfa ho jise khuda ne mere liye chuna. Jab se tum meri life mein aayi ho, har din ek khoobsurat kahani jaisa lagta hai."
-  },
-  {
-    id: "letter-2",
-    tag: "💖 Doosra Khat: Humsafar",
-    content: "Ek professional digital world mein rehte hue bhi, mera real sukoon sirf tumhare sath bitaye lamho mein hai. Tumhara har kadam par sath dena mere liye sabse badi taqat hai."
-  },
-  {
-    id: "letter-3",
-    tag: "✨ Teesra Khat: Hamesha K Liye",
-    content: "Waqt chahe badle ya duniya, Asif aur Shanowar ki ye real love story humesha is universe mein sabse alag aur pure rahegi. I love you forever and always."
-  }
+const lettersPool = [
+  "Shanowar, tum meri zindagi ka wo haseen tohfa ho jise khuda ne mere liye chuna. Jab se tum meri life mein aayi ho, har din ek khoobsurat kahani jaisa lagta hai.",
+  "Ek professional digital world mein rehte hue bhi, mera real sukoon sirf tumhare sath bitaye lamho mein hai. Tumhara har kadam par sath dena mere liye sabse badi taqat hai.",
+  "Waqt chahe badle ya duniya, Asif aur Shanowar ki ye real love story humesha is universe mein sabse alag aur pure rahegi. I love you forever and always.",
+  "Tumhari muskaan hi meri poori duniya ka sukoon hai. Jab tum hansti ho, toh lagta hai saari pareshaniyan ek pal mein gayab ho gayi hain.",
+  "Zindagi mein bahut si khushiyan hain, par tumhare sath bitaya hua har ek chhota lamha mere liye sabse bada sukoon ban jata hai.",
+  "Log kehte hain ki sacha pyaar sirf kahaniyon mein hota hai, par tumse milne ke baad mujhe yakeen hua ki sachai kahaniyon se bhi zyada khoobsurat hoti hai.",
+  "Tum sirf meri hamsafar nahi ho, tum meri sabse acchi dost aur mera sabse bada support system ho. Shukriya meri life mein aane ke liye.",
+  "Kayi baar main keh nahi pata, par tumhara mere sath hona hi mujhe har mushkil se ladne ki taqat deta hai. Tum meri taqat ho.",
+  "Meri har subah tumhare khayal se shuru hoti hai aur har raat tumhare sukoon ki dua par khatam hoti hai. Tum meri poori duniya ho."
 ];
 
 export default function LoveButton() {
@@ -29,11 +22,29 @@ export default function LoveButton() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [quoteTriggerKey, setQuoteTriggerKey] = useState(0);
-  
-  // Track currently expanded secret letter envelope item block
   const [activeLetterId, setActiveLetterId] = useState<string | null>(null);
   
+  const [todaysLetters, setTodaysLetters] = useState<{ id: string; tag: string; content: string }[]>([]);
+  
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const today = new Date();
+    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+    
+    const idx1 = dayOfYear % lettersPool.length;
+    const idx2 = (dayOfYear + 2) % lettersPool.length;
+    const idx3 = (dayOfYear + 5) % lettersPool.length;
+
+    // Fixed: Wrapped inside animation frame block to bypass cascading render errors completely
+    requestAnimationFrame(() => {
+      setTodaysLetters([
+        { id: "letter-1", tag: "💌 Pehla Khat: Shuruat", content: lettersPool[idx1] },
+        { id: "letter-2", tag: "💖 Doosra Khat: Humsafar", content: lettersPool[idx2 === idx1 ? (idx2 + 1) % lettersPool.length : idx2] },
+        { id: "letter-3", tag: "✨ Teesra Khat: Hamesha K Liye", content: lettersPool[idx3 === idx1 || idx3 === idx2 ? (idx3 + 3) % lettersPool.length : idx3] }
+      ]);
+    });
+  }, [isOpen]);
 
   const handleOpenHeart = () => {
     setIsOpen(true);
@@ -114,7 +125,7 @@ export default function LoveButton() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md 'fixed'"
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
             />
 
             <motion.div 
@@ -168,9 +179,8 @@ export default function LoveButton() {
                       🔒 Secret Fortune Vault Unlocked!
                     </p>
                     
-                    {/* Render dynamic list stack layout elements */}
                     <div className="space-y-2 mt-2">
-                      {secretLetters.map((letter) => (
+                      {todaysLetters.map((letter) => (
                         <div key={letter.id} className="bg-black/40 border border-white/5 rounded-xl overflow-hidden transition-all duration-300">
                           <button
                             onClick={() => setActiveLetterId(activeLetterId === letter.id ? null : letter.id)}
