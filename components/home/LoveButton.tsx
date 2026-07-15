@@ -94,7 +94,7 @@ export default function LoveButton() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleOpenHeart}
-          className="rounded-full bg-pink-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-pink-600/30 cursor-pointer transition-colors hover:bg-pink-700"
+          className="rounded-full bg-[#e05297] px-8 py-3.5 text-base font-semibold text-white shadow-md shadow-pink-200 cursor-pointer transition-colors hover:bg-[#c93d7f]"
         >
           Open My Heart
         </motion.button>
@@ -104,12 +104,12 @@ export default function LoveButton() {
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={toggleMusic}
-            className="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full text-xs text-pink-400 cursor-pointer hover:bg-white/10"
+            className="flex items-center gap-2 bg-white/60 border border-white/80 px-3 py-1 rounded-full text-xs text-[#e05297] font-medium cursor-pointer hover:bg-white/80 shadow-xs"
           >
             <span className="flex gap-0.5 items-end h-3 w-4">
-              <span className="bg-pink-500 w-0.5 animate-pulse h-full" />
-              <span className="bg-pink-500 w-0.5 animate-pulse h-3/4" />
-              <span className="bg-pink-500 w-0.5 animate-pulse h-1/2" />
+              <span className="bg-[#e05297] w-0.5 h-full animate-[pulse_0.8s_infinite]" />
+              <span className="bg-[#e05297] w-0.5 h-3/4 animate-[pulse_0.5s_infinite]" />
+              <span className="bg-[#e05297] w-0.5 h-1/2 animate-[pulse_0.9s_infinite]" />
             </span>
             Music Playing
           </motion.button>
@@ -124,7 +124,7 @@ export default function LoveButton() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+              className="absolute inset-0 bg-black/20 backdrop-blur-md"
             />
 
             <motion.div 
@@ -132,40 +132,40 @@ export default function LoveButton() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className="relative bg-[#250f1a]/95 border border-pink-500/40 rounded-3xl p-6 max-w-md w-full text-center shadow-2xl shadow-pink-950/50 space-y-6 z-10 my-auto max-h-[90vh] overflow-y-auto"
+              className="relative bg-white/80 border border-white/60 p-6 max-w-md w-full text-center shadow-2xl rounded-3xl z-10 my-auto max-h-[90vh] overflow-y-auto backdrop-blur-xl"
             >
               <div className="absolute top-4 right-4 flex items-center gap-2">
                 <button 
                   onClick={toggleMusic}
-                  className="text-gray-400 hover:text-white text-xs bg-white/5 px-3 py-1.5 rounded-xl border border-white/5 cursor-pointer"
+                  className="text-[#515154] hover:text-[#1d1d1f] text-xs bg-white/60 px-2.5 py-1 rounded-xl border border-white/80 font-medium cursor-pointer"
                 >
                   {isPlaying ? "Mute" : "Unmute"}
                 </button>
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="text-gray-400 hover:text-white text-xl p-2 cursor-pointer"
+                  className="text-[#515154] hover:text-[#1d1d1f] text-lg p-1 font-bold cursor-pointer"
                 >
                   ✕
                 </button>
               </div>
 
-              <div className="w-14 h-14 bg-pink-500/10 rounded-full flex items-center justify-center mx-auto border border-pink-500/20 shadow-inner mt-4">
-                <span className="text-xl animate-pulse">Vault</span>
+              <div className="w-12 h-12 bg-pink-50 rounded-full flex items-center justify-center mx-auto border border-pink-100 shadow-xs mt-4">
+                <span className="text-xs font-bold text-[#e05297]">Vault</span>
               </div>
 
               <Quote key={quoteTriggerKey} />
 
-              <div className="pt-4 border-t border-white/5 space-y-4">
+              <div className="pt-4 border-t border-gray-200/60 space-y-4">
                 {!isUnlocked ? (
                   <div className="space-y-2">
-                    <p className="text-xs text-gray-400">Enter our special anniversary date to unlock a secret...</p>
+                    <p className="text-xs font-medium text-[#515154]">Enter our special anniversary date to unlock a secret...</p>
                     <input 
                       type="password"
                       maxLength={4}
                       placeholder="MMDD"
                       value={secretInput}
                       onChange={(e) => checkSecretCode(e.target.value)}
-                      className="w-24 bg-[#14040a]/80 border border-pink-500/40 rounded-lg py-1 px-2 text-center text-rose-200 placeholder-rose-900/50 focus:outline-none focus:border-pink-400 text-sm tracking-widest"
+                      className="w-24 bg-white/60 border border-gray-300 rounded-xl py-1 px-2 text-center text-[#1d1d1f] placeholder-gray-400 focus:outline-none focus:border-[#e05297] text-sm tracking-widest shadow-inner font-bold"
                     />
                   </div>
                 ) : (
@@ -174,20 +174,20 @@ export default function LoveButton() {
                     animate={{ opacity: 1, y: 0 }}
                     className="space-y-3 text-left w-full"
                   >
-                    <p className="text-xs font-semibold text-pink-400 text-center uppercase tracking-wide">
+                    <p className="text-xs font-bold text-[#e05297] text-center uppercase tracking-wider">
                       Secret Fortune Vault Unlocked
                     </p>
                     
                     <div className="space-y-2 mt-2">
                       {todaysLetters.map((letter) => (
-                        <div key={letter.id} className="bg-[#1b0711]/60 border border-pink-500/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-pink-500/20 shadow-inner">
+                        <div key={letter.id} className="bg-white/60 border border-white rounded-2xl overflow-hidden transition-all duration-300 shadow-xs">
                           <button
                             onClick={() => setActiveLetterId(activeLetterId === letter.id ? null : letter.id)}
-                            className="w-full text-left px-4 py-2.5 text-xs font-medium text-gray-200 flex justify-between items-center hover:bg-white/5 cursor-pointer"
+                            className="w-full text-left px-4 py-3 text-xs font-bold text-[#1d1d1f] flex justify-between items-center hover:bg-white/40 cursor-pointer"
                           >
                             <span>{letter.tag}</span>
-                            <span className="text-[10px] text-pink-400">
-                              {activeLetterId === letter.id ? "▲ Close" : "▼ Open"}
+                            <span className="text-[10px] text-[#e05297] font-bold">
+                              {activeLetterId === letter.id ? "Close" : "Open"}
                             </span>
                           </button>
                           
@@ -198,7 +198,7 @@ export default function LoveButton() {
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="px-4 pb-3 pt-1 border-t border-pink-500/10 text-[11px] text-rose-200/80 italic leading-relaxed"
+                                className="px-4 pb-3 pt-1 border-t border-gray-100 text-xs text-[#515154] font-medium italic leading-relaxed"
                               >
                                 {letter.content}
                               </motion.div>
@@ -211,7 +211,7 @@ export default function LoveButton() {
                 )}
               </div>
 
-              <div className="pt-2 text-[10px] text-gray-500">
+              <div className="pt-2 text-[10px] font-medium text-gray-400">
                 Created securely with code by Asif Jamil
               </div>
             </motion.div>
