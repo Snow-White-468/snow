@@ -8,6 +8,7 @@ import LoveButton from "@/components/home/LoveButton";
 import HeartBurst from "@/components/home/HeartBurst";
 import DynamicIslandNav from "../components/home/DynamicIslandNav";
 import FloatingDock from "../components/home/FloatingDock";
+import CoupleSlider from "@/components/home/CoupleSlider";
 
 interface WishItem {
   id: string;
@@ -82,7 +83,7 @@ export default function Home() {
   };
 
   const deleteWish = (owner: "asif" | "shanowar", id: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevents triggering the toggle when clicking delete
+    e.stopPropagation();
     if (owner === "asif") {
       const filtered = asifWishes.filter(w => w.id !== id);
       updateAsifWishes(filtered);
@@ -93,13 +94,14 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen w-full overflow-x-hidden bg-[#f7ebf2] flex flex-col items-center justify-start pt-24 pb-32 p-4">
+    <main className="relative min-h-screen w-full overflow-x-hidden bg-[#f7ebf2] flex flex-col items-center justify-start pt-24 pb-36 p-4">
       <Background />
       <HeartBurst />
 
       <DynamicIslandNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <div className={`relative z-10 w-full bg-white/40 backdrop-blur-xl border border-white/60 p-6 md:p-8 rounded-3xl shadow-[0_25px_50px_-12px_rgba(236,183,213,0.4)] flex flex-col items-center transition-all duration-500 mb-6 ${
+      {/* Main Glass Box Converted to Primary Application Hero Section Frame */}
+      <section className={`relative z-10 w-full bg-white/40 backdrop-blur-xl border border-white/60 p-6 md:p-8 rounded-3xl shadow-[0_25px_50px_-12px_rgba(236,183,213,0.4)] flex flex-col items-center transition-all duration-500 mb-8 ${
         activeTab === "wishlist" ? "max-w-3xl" : "max-w-md text-center justify-center min-h-100 space-y-8"
       }`}>
         {activeTab === "home" && (
@@ -127,7 +129,6 @@ export default function Home() {
             <h3 className="text-xs font-bold tracking-widest text-[#e05297] uppercase mb-4">Future Canvas Bucket List</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full text-left">
-              
               {/* Asif Canvas */}
               <div className="bg-white/30 border border-white/50 p-4 rounded-2xl space-y-4 flex flex-col justify-between">
                 <div>
@@ -159,7 +160,6 @@ export default function Home() {
                     ))}
                   </div>
                 </div>
-                
                 <div className="flex gap-2 pt-2 border-t border-gray-200/40 mt-auto">
                   <input 
                     type="text" 
@@ -209,7 +209,6 @@ export default function Home() {
                     ))}
                   </div>
                 </div>
-
                 <div className="flex gap-2 pt-2 border-t border-gray-200/40 mt-auto">
                   <input 
                     type="text" 
@@ -227,11 +226,13 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
         )}
-      </div>
+      </section>
+
+      {/* Conditionally Render Couple Photo Slider Widget Directly Below Main Hero Box Only on Home View */}
+      {activeTab === "home" && <CoupleSlider />}
 
       <FloatingDock activeTab={activeTab} setActiveTab={setActiveTab} />
     </main>
