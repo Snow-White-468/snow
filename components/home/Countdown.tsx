@@ -1,54 +1,37 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
 interface TimeLeft {
-  days: string;
-  hours: string;
-  minutes: string;
-  seconds: string;
-  isPast: boolean;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
 }
 
 export default function Countdown() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: "00",
-    hours: "00",
-    minutes: "00",
-    seconds: "00",
-    isPast: false
-  });
-  
-  const [loveThoughtsCount, setLoveThoughtsCount] = useState<number>(0);
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [totalSecondsSpent, setTotalSecondsSpent] = useState<number>(0);
 
   useEffect(() => {
-    // Your exact target romance timeline milestone
-    const targetDate = new Date("2026-06-07T00:00:00");
+    // 06 June 2026 as the base anniversary parameter link reference
+    const targetDate = new Date("2026-06-06T00:00:00");
 
     const calculateTime = () => {
-      const now = new Date();
-      // Using absolute value to ensure math counts up smoothly after target date crosses
-      const rawDifference = targetDate.getTime() - now.getTime();
-      const isPast = rawDifference <= 0;
-      const difference = Math.abs(rawDifference);
+      const difference = +new Date() - +targetDate;
+      
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60)
+        });
 
-      const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((difference % (1000 * 60)) / 1000);
-
-      setTimeLeft({
-        days: String(d).padStart(2, "0"),
-        hours: String(h).padStart(2, "0"),
-        minutes: String(m).padStart(2, "0"),
-        seconds: String(s).padStart(2, "0"),
-        isPast
-      });
-
-      const baselinePastDate = new Date("2024-01-01T00:00:00");
-      const secondsElapsedSinceBaseline = Math.floor((now.getTime() - baselinePastDate.getTime()) / 1000);
-      setLoveThoughtsCount(secondsElapsedSinceBaseline * 2);
+        // 18 breaths per minute scale factor simulation metric calculation
+        const seconds = Math.floor(difference / 1000);
+        setTotalSecondsSpent(seconds);
+      }
     };
 
     calculateTime();
@@ -57,50 +40,48 @@ export default function Countdown() {
     return () => clearInterval(timer);
   }, []);
 
-  const timeBlocks = [
-    { label: "Days", value: timeLeft.days },
-    { label: "Hours", value: timeLeft.hours },
-    { label: "Mins", value: timeLeft.minutes },
-    { label: "Secs", value: timeLeft.seconds },
-  ];
+  const totalBreaths = Math.floor((totalSecondsSpent / 60) * 18);
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto">
-      <div className="w-full bg-neutral-900/40 border border-white/5 backdrop-blur-md rounded-3xl p-6 shadow-xl text-center space-y-4">
-        <p className="text-xs font-semibold tracking-wider text-pink-500 uppercase flex items-center justify-center gap-1">
-          {timeLeft.isPast ? "Time Spent in Pure Love Together ❤️" : "Days of Pure Love Together ❤️"}
-        </p>
-
-        <div className="grid grid-cols-4 gap-2">
-          {timeBlocks.map((block) => (
-            <div 
-              key={block.label} 
-              className="bg-neutral-950/60 border border-white/5 rounded-2xl py-3 px-1 flex flex-col items-center justify-center min-w-17.5"
-            >
-              <span className="text-2xl font-bold font-mono tracking-tight text-white transition-all duration-300">
-                {block.value}
-              </span>
-              <span className="text-[10px] tracking-wide text-gray-500 font-medium mt-0.5">
-                {block.label}
-              </span>
-            </div>
-          ))}
-        </div>
+    <div className="w-full space-y-6">
+      <div className="space-y-1">
+        <h3 className="text-xs font-bold tracking-widest text-[#e05297] uppercase">
+          Time Spent In Pure Love Together
+        </h3>
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full text-center py-2 px-4 rounded-full bg-pink-500/5 border border-pink-500/10 backdrop-blur-sm shadow-inner"
-      >
-        <p className="text-[11px] font-medium text-gray-400 tracking-wide">
+      {/* Grid Layout Stack Mapping Grid */}
+      <div className="grid grid-cols-4 gap-2 w-full max-w-sm mx-auto">
+        {[
+          { label: "Days", value: timeLeft.days },
+          { label: "Hours", value: timeLeft.hours },
+          { label: "Mins", value: timeLeft.minutes },
+          { label: "Secs", value: timeLeft.seconds }
+        ].map((item) => (
+          <div 
+            key={item.label} 
+            className="bg-white/40 border border-white/50 rounded-2xl p-3 flex flex-col items-center justify-center shadow-xs"
+          >
+            <span className="text-2xl font-bold text-[#1d1d1f] tabular-nums tracking-tight">
+              {String(item.value).padStart(2, "0")}
+            </span>
+            <span className="text-[10px] font-semibold text-[#515154] uppercase tracking-wider mt-0.5">
+              {item.label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Micro Metrics Heartbeat Text Data Metric Layer */}
+      <div className="bg-white/30 border border-white/40 rounded-2xl p-4 max-w-sm mx-auto shadow-xs">
+        <p className="text-xs font-medium text-[#515154] leading-relaxed">
           Humne ek dusre ko abhi tak{" "}
-          <span className="font-mono text-xs font-bold text-pink-400 mx-1">
-            ~{loveThoughtsCount.toLocaleString()}
+          <span className="text-[#e05297] font-bold tabular-nums">
+            ~{totalBreaths.toLocaleString()}
           </span>{" "}
-          baar apni saanso mein yaad kiya hai ✨
+          baar apni saanso mein yaad kiya hai
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function Quote() {
   const [currentContent, setCurrentContent] = useState<{ title: string; body: string }>({
-    title: "Today&apos;s Love Note 📝", // Fixed: Escaped raw apostrophe for ESLint validation
+    title: "Today's Love Note",
     body: "Loading your note...",
   });
 
@@ -24,11 +24,9 @@ export default function Quote() {
           body: event.message,
         });
       } else {
-        // Upgrade: Introducing pure dynamic random selection array from your pre-existing DAILY_QUOTES data pool
         const randomQuoteIndex = Math.floor(Math.random() * DAILY_QUOTES.length);
-        
         setCurrentContent({
-          title: "Today&apos;s Love Note 📝", // Fixed: Escaped raw apostrophe for ESLint validation
+          title: "Today's Love Note",
           body: DAILY_QUOTES[randomQuoteIndex],
         });
       }
@@ -42,13 +40,10 @@ export default function Quote() {
       transition={{ duration: 0.8, delay: 0.3 }}
       className="max-w-md w-full text-center space-y-2 px-4"
     >
-      <h4 className="text-pink-400 font-medium tracking-wide text-sm uppercase">
-        {/* Rendered directly inside HTML wrapper via standard string injection to secure layout */}
-        {currentContent.title === "Today's Love Note 📝" || currentContent.title.includes("Today") 
-          ? "Today's Love Note 📝" 
-          : currentContent.title}
+      <h4 className="text-[#e05297] font-bold tracking-widest text-xs uppercase">
+        {currentContent.title}
       </h4>
-      <p className="text-xl md:text-2xl font-serif italic text-gray-200 leading-relaxed">
+      <p className="text-xl md:text-2xl font-serif italic text-[#1d1d1f] leading-relaxed">
         {`"${currentContent.body}"`}
       </p>
     </motion.div>
